@@ -58,7 +58,7 @@ void APP_DeviceCDCEmulatorInitialize();
 * Output: None
 *
 ********************************************************************/
-void APP_DeviceCDCEmulatorTasks(int index);
+void APP_DeviceCDCEmulatorTasks();
 
 
 #endif

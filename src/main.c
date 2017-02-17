@@ -88,8 +88,7 @@ MAIN_RETURN main(void)
         }
 
         //Application specific tasks
-        APP_DeviceCDCEmulatorTasks(0);
-        APP_DeviceCDCEmulatorTasks(1);
+        APP_DeviceCDCEmulatorTasks();
 
         USBMaskInterrupts();
 

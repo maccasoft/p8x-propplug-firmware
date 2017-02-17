@@ -76,7 +76,8 @@ void USART_Initialize();
  * Note:
  *
  *****************************************************************************/
-void USART_putcUSART(int, char);
+void USART_putcUSART1(char);
+void USART_putcUSART2(char);
 
 /******************************************************************************
  * Function:        void USART_mySetLineCodingHandler(void)
@@ -115,6 +116,7 @@ void USART_mySetLineCodingHandler(void);
  * Note:
  *
  *****************************************************************************/
-unsigned char USART_getcUSART(int);
+unsigned char USART_getcUSART1();
+unsigned char USART_getcUSART2();
 
 #endif //USART_H

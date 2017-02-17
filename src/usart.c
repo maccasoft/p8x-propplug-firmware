@@ -79,12 +79,14 @@ void USART_Initialize()
  * Note:
  *
  *****************************************************************************/
-void USART_putcUSART(int index, char c)
+void USART_putcUSART1(char c)
 {
-    if (index == 0)
-        TXREG2 = c;
-    if (index == 1)
-        TXREG1 = c;
+    TXREG2 = c;
+}
+
+void USART_putcUSART2(char c)
+{
+    TXREG1 = c;
 }
 
 
@@ -140,37 +142,38 @@ void USART_mySetLineCodingHandler(void)
  * Note:
  *
  *****************************************************************************/
-unsigned char USART_getcUSART (int index)
+unsigned char USART_getcUSART1 ()
 {
 	char  c;
 
-    if (index == 0)
+    if (RCSTA2bits.OERR)        // in case of overrun error
+    {                           // we should never see an overrun error, but if we do,
+        RCSTA2bits.CREN = 0;    // reset the port
+        c = RCREG2;
+        RCSTA2bits.CREN = 1;    // and keep going.
+    }
+    else
     {
-        if (RCSTA2bits.OERR)        // in case of overrun error
-        {                           // we should never see an overrun error, but if we do,
-            RCSTA2bits.CREN = 0;    // reset the port
-            c = RCREG2;
-            RCSTA2bits.CREN = 1;    // and keep going.
-        }
-        else
-        {
-            c = RCREG2;
-        }
+        c = RCREG2;
     }
 
-	if (index == 1)
-	{
-        if (RCSTA1bits.OERR)        // in case of overrun error
-        {                           // we should never see an overrun error, but if we do,
-            RCSTA1bits.CREN = 0;    // reset the port
-            c = RCREG1;
-            RCSTA1bits.CREN = 1;    // and keep going.
-        }
-        else
-        {
-            c = RCREG1;
-        }
-	}
+	return c;
+}
+
+unsigned char USART_getcUSART2 ()
+{
+	char  c;
+
+    if (RCSTA1bits.OERR)        // in case of overrun error
+    {                           // we should never see an overrun error, but if we do,
+        RCSTA1bits.CREN = 0;    // reset the port
+        c = RCREG1;
+        RCSTA1bits.CREN = 1;    // and keep going.
+    }
+    else
+    {
+        c = RCREG1;
+    }
 
 	return c;
 }

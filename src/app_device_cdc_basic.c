@@ -35,17 +35,25 @@
 #include "usart.h"
 #include "io_mapping.h"
 
-/** VARIABLES ******************************************************/
+/** VARIABLES SERIAL 1 *********************************************/
 
-//static bool buttonPressed;
-//static char buttonMessage[] = "Button pressed.\r\n";
-static uint8_t USB_Out_Buffer[2][CDC_DATA_OUT_EP_SIZE];
-static uint8_t RS232_Out_Data[2][CDC_DATA_IN_EP_SIZE];
+static uint8_t USB_Out_Buffer0[CDC_DATA_OUT_EP_SIZE];
+static uint8_t RS232_Out_Data0[CDC_DATA_IN_EP_SIZE];
 
-static unsigned char  NextUSBOut[2];
-static unsigned char  LastRS232Out[2];  // Number of characters in the buffer
-static unsigned char  RS232cp[2];       // current position within the buffer
-static unsigned char  RS232_Out_Data_Rdy[2];
+static unsigned char  NextUSBOut0;
+static unsigned char  LastRS232Out0;  // Number of characters in the buffer
+static unsigned char  RS232cp0;       // current position within the buffer
+static unsigned char  RS232_Out_Data_Rdy0;
+
+/** VARIABLES SERIAL 2 *********************************************/
+
+static uint8_t USB_Out_Buffer1[CDC_DATA_OUT_EP_SIZE];
+static uint8_t RS232_Out_Data1[CDC_DATA_IN_EP_SIZE];
+
+static unsigned char  NextUSBOut1;
+static unsigned char  LastRS232Out1;  // Number of characters in the buffer
+static unsigned char  RS232cp1;       // current position within the buffer
+static unsigned char  RS232_Out_Data_Rdy1;
 
 
 /*********************************************************************
@@ -70,32 +78,34 @@ void APP_DeviceCDCEmulatorInitialize()
     unsigned char i;
 	for (i=0; i<CDC_DATA_OUT_EP_SIZE; i++)
     {
-		USB_Out_Buffer[0][i] = 0;
-        USB_Out_Buffer[1][i] = 0;
+		USB_Out_Buffer0[i] = 0;
+        USB_Out_Buffer1[i] = 0;
     }
 
-	NextUSBOut[0] = NextUSBOut[1] = 0;
-	LastRS232Out[0] = LastRS232Out[1] = 0;
-	RS232_Out_Data_Rdy[0] = RS232_Out_Data_Rdy[1] = 0;
+	NextUSBOut0 = NextUSBOut1 = 0;
+	LastRS232Out0 = LastRS232Out1 = 0;
+	RS232_Out_Data_Rdy0 = RS232_Out_Data_Rdy1 = 0;
 }
 
 
-static int mTxRdyUSART(int index)
+static int mTxRdyUSART1()
 {
-    if (index == 0)
-        return TXSTA2bits.TRMT;
-    if (index == 1)
-        return TXSTA1bits.TRMT;
-    return 0;
+    return TXSTA2bits.TRMT;
 }
 
-static int mDataRdyUSART(int index)
+static int mTxRdyUSART2()
 {
-    if (index == 0)
-        return PIR3bits.RC2IF;
-    if (index == 1)
-        return PIR1bits.RC1IF;
-    return 0;
+    return TXSTA1bits.TRMT;
+}
+
+static int mDataRdyUSART1()
+{
+    return PIR3bits.RC2IF;
+}
+
+static int mDataRdyUSART2()
+{
+    return PIR1bits.RC1IF;
 }
 
 /*********************************************************************
@@ -112,46 +122,89 @@ static int mDataRdyUSART(int index)
 * Output: None
 *
 ********************************************************************/
-void APP_DeviceCDCEmulatorTasks(int index)
+void APP_DeviceCDCEmulatorTasks()
 {
-    
-	if (RS232_Out_Data_Rdy[index] == 0)  // only check for new USB buffer if the old RS232 buffer is
+    /* Serial 1 ****************************************************/
+
+	if (RS232_Out_Data_Rdy0 == 0)  // only check for new USB buffer if the old RS232 buffer is
 	{						      // empty.  This will cause additional USB packets to be NAK'd
-		LastRS232Out[index] = getsUSBUSART(index,RS232_Out_Data[index],CDC_DATA_IN_EP_SIZE); //until the buffer is free.
-		if(LastRS232Out[index] > 0)
+		LastRS232Out0 = getsUSBUSART(0,RS232_Out_Data0,CDC_DATA_IN_EP_SIZE); //until the buffer is free.
+		if(LastRS232Out0 > 0)
 		{
-			RS232_Out_Data_Rdy[index] = 1;  // signal buffer full
-			RS232cp[index] = 0;  // Reset the current position
-            LED_On(index == 0 ? LED_USB_SERIAL1_ACTIVITY : LED_USB_SERIAL2_ACTIVITY);
+			RS232_Out_Data_Rdy0 = 1;  // signal buffer full
+			RS232cp0 = 0;  // Reset the current position
+            LED_On(LED_USB_SERIAL1_ACTIVITY);
 		}
 	}
 
     // Check if one or more bytes are waiting in the physical UART transmit
     // queue.  If so, send it out the UART TX pin.
-    if (RS232_Out_Data_Rdy[index] && mTxRdyUSART(index))
+    if (RS232_Out_Data_Rdy0 && mTxRdyUSART1())
 	{
-        USART_putcUSART(index, RS232_Out_Data[index][RS232cp[index]]);
-        ++RS232cp[index];
-        if (RS232cp[index] == LastRS232Out[index])
-            RS232_Out_Data_Rdy[index] = 0;
+        USART_putcUSART1(RS232_Out_Data0[RS232cp0]);
+        ++RS232cp0;
+        if (RS232cp0 == LastRS232Out0)
+            RS232_Out_Data_Rdy0 = 0;
 	}
 
     // Check if we received a character over the physical UART, and we need
     // to buffer it up for eventual transmission to the USB host.
-    if (mDataRdyUSART(index) && (NextUSBOut[index] < (CDC_DATA_OUT_EP_SIZE - 1)))
+    if (mDataRdyUSART1() && (NextUSBOut0 < (CDC_DATA_OUT_EP_SIZE - 1)))
     {
-		USB_Out_Buffer[index][NextUSBOut[index]] = USART_getcUSART(index);
-		++NextUSBOut[index];
-		USB_Out_Buffer[index][NextUSBOut[index]] = 0;
+		USB_Out_Buffer0[NextUSBOut0] = USART_getcUSART1();
+		++NextUSBOut0;
+		USB_Out_Buffer0[NextUSBOut0] = 0;
 	}
 
     // Check if any bytes are waiting in the queue to send to the USB host.
     // If any bytes are waiting, and the endpoint is available, prepare to
     // send the USB packet to the host.
-	if ((USBUSARTIsTxTrfReady(index)) && (NextUSBOut[index] > 0))
+	if ((USBUSARTIsTxTrfReady(0)) && (NextUSBOut0 > 0))
 	{
-		putUSBUSART(index, &USB_Out_Buffer[index][0], NextUSBOut[index]);
-		NextUSBOut[index] = 0;
-        LED_On(index == 0 ? LED_USB_SERIAL1_ACTIVITY : LED_USB_SERIAL2_ACTIVITY);
+		putUSBUSART(0, &USB_Out_Buffer0[0], NextUSBOut0);
+		NextUSBOut0 = 0;
+        LED_On(LED_USB_SERIAL1_ACTIVITY);
+	}
+
+    /* Serial 2 ****************************************************/
+
+	if (RS232_Out_Data_Rdy1 == 0)  // only check for new USB buffer if the old RS232 buffer is
+	{						      // empty.  This will cause additional USB packets to be NAK'd
+		LastRS232Out1 = getsUSBUSART(1,RS232_Out_Data1,CDC_DATA_IN_EP_SIZE); //until the buffer is free.
+		if(LastRS232Out1 > 0)
+		{
+			RS232_Out_Data_Rdy1 = 1;  // signal buffer full
+			RS232cp1 = 0;  // Reset the current position
+            LED_On(LED_USB_SERIAL2_ACTIVITY);
+		}
+	}
+
+    // Check if one or more bytes are waiting in the physical UART transmit
+    // queue.  If so, send it out the UART TX pin.
+    if (RS232_Out_Data_Rdy1 && mTxRdyUSART2())
+	{
+        USART_putcUSART2(RS232_Out_Data1[RS232cp1]);
+        ++RS232cp1;
+        if (RS232cp1 == LastRS232Out1)
+            RS232_Out_Data_Rdy1 = 0;
+	}
+
+    // Check if we received a character over the physical UART, and we need
+    // to buffer it up for eventual transmission to the USB host.
+    if (mDataRdyUSART2() && (NextUSBOut1 < (CDC_DATA_OUT_EP_SIZE - 1)))
+    {
+		USB_Out_Buffer1[NextUSBOut1] = USART_getcUSART2();
+		++NextUSBOut1;
+		USB_Out_Buffer1[NextUSBOut1] = 0;
+	}
+
+    // Check if any bytes are waiting in the queue to send to the USB host.
+    // If any bytes are waiting, and the endpoint is available, prepare to
+    // send the USB packet to the host.
+	if ((USBUSARTIsTxTrfReady(1)) && (NextUSBOut1 > 0))
+	{
+		putUSBUSART(1, &USB_Out_Buffer1[0], NextUSBOut1);
+		NextUSBOut1 = 0;
+        LED_On(LED_USB_SERIAL2_ACTIVITY);
 	}
 }
