@@ -48,19 +48,22 @@
  *******************************************************************/
 MAIN_RETURN main(void)
 {
-    SYSTEM_Initialize(SYSTEM_STATE_USB_START);
-
-    // Configure all pins as digital ports
-    ANCON0 = 0xFF;
-    ANCON1 = 0x1F;
-    LATA = LATB = LATC = 0;
-        
     // Map peripherals
     EECON2 = 0x55; EECON2 = 0xAA; PPSCONbits.IOLOCK = 0;
     RPINR16 = 13; // Map RP13/RC2 to USART2 RX
-    RPOR12 = 6;   // Map RP12/RC1 to USART2 TX
+    RPOR12 = 5;   // Map RP12/RC1 to USART2 TX
     EECON2 = 0x55; EECON2 = 0xAA; PPSCONbits.IOLOCK = 1;
 
+    // Configure all pins as digital ports
+    ANCON0 = 0x1F;
+    ANCON1 = 0x1F;
+    ODCON1 = ODCON3 = 0x00;
+    ODCON2 = 0b00000011;
+    LATA = LATB = 0;
+    LATC = 0b11000110;
+
+    USART_Initialize();
+    SYSTEM_Initialize(SYSTEM_STATE_USB_START);
     USBDeviceInit();
     USBDeviceAttach();
     

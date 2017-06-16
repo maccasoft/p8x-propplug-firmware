@@ -748,8 +748,9 @@ type 0204, grid 7.5 mm</description>
 <wire x1="-2.032" y1="0" x2="-1.7306" y2="-1.065" width="0.254" layer="51" curve="31.60822"/>
 <pad name="A" x="-1.27" y="0" drill="0.8" diameter="1.778"/>
 <pad name="K" x="1.27" y="0" drill="0.8" diameter="1.778"/>
-<text x="1.905" y="0.381" size="1.27" layer="25" ratio="10">&gt;NAME</text>
-<text x="1.905" y="-1.651" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+<text x="0" y="2.8575" size="1.27" layer="25" font="vector" ratio="15" align="bottom-center">&gt;NAME</text>
+<wire x1="-2.54" y1="1.905" x2="-2.54" y2="1.27" width="0.127" layer="21"/>
+<wire x1="-2.8575" y1="1.5875" x2="-2.2225" y2="1.5875" width="0.127" layer="21"/>
 </package>
 <package name="LED5MM">
 <description>&lt;B&gt;LED&lt;/B&gt;&lt;p&gt;
@@ -816,6 +817,29 @@ Source: http://catalog.osram-os.com .. LG_LS_LY_T679_OBS.pdf</description>
 <text x="-3.429" y="-2.794" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
 <wire x1="2.54" y1="1.27" x2="2.54" y2="-1.27" width="0.1524" layer="21" curve="-180"/>
 <wire x1="-2.54" y1="-1.27" x2="-2.54" y2="1.27" width="0.1524" layer="21" curve="-180"/>
+</package>
+<package name="HEADER_PRG_1X05_O">
+<wire x1="-6.35" y1="-2.54" x2="-6.35" y2="1.27" width="0.1524" layer="21"/>
+<wire x1="-6.35" y1="1.27" x2="-3.81" y2="1.27" width="0.1524" layer="21"/>
+<wire x1="-3.81" y1="1.27" x2="6.35" y2="1.27" width="0.1524" layer="21"/>
+<wire x1="6.35" y1="1.27" x2="6.35" y2="-2.54" width="0.1524" layer="21"/>
+<wire x1="-3.81" y1="-2.54" x2="-3.81" y2="1.27" width="0.1524" layer="21"/>
+<rectangle x1="4.826" y1="-0.254" x2="5.334" y2="0.254" layer="48"/>
+<rectangle x1="2.286" y1="-0.254" x2="2.794" y2="0.254" layer="48"/>
+<rectangle x1="-0.254" y1="-0.254" x2="0.254" y2="0.254" layer="48"/>
+<rectangle x1="-2.794" y1="-0.254" x2="-2.286" y2="0.254" layer="48"/>
+<rectangle x1="-5.334" y1="-0.254" x2="-4.826" y2="0.254" layer="48"/>
+<pad name="1" x="-5.08" y="0" drill="0.9" diameter="1.6764" shape="offset" rot="R270" first="yes"/>
+<pad name="2" x="-2.54" y="0" drill="0.9" diameter="1.6764" shape="offset" rot="R270"/>
+<pad name="3" x="0" y="0" drill="0.9" diameter="1.6764" shape="offset" rot="R270"/>
+<pad name="4" x="2.54" y="0" drill="0.9" diameter="1.6764" shape="offset" rot="R270"/>
+<pad name="5" x="5.08" y="0" drill="0.9" diameter="1.6764" shape="offset" rot="R270"/>
+<text x="0" y="2.54" size="1.27" layer="25" font="vector" ratio="15" align="bottom-center">&gt;NAME</text>
+<polygon width="0.0634" layer="21">
+<vertex x="-6.985" y="0"/>
+<vertex x="-7.62" y="0.635"/>
+<vertex x="-7.62" y="-0.635"/>
+</polygon>
 </package>
 </packages>
 <symbols>
@@ -920,6 +944,18 @@ Source: http://catalog.osram-os.com .. LG_LS_LY_T679_OBS.pdf</description>
 </technologies>
 </device>
 <device name="B" package="HEADER_PRG_1X05_B">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+<connect gate="G$1" pin="4" pad="4"/>
+<connect gate="G$1" pin="5" pad="5"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="O" package="HEADER_PRG_1X05_O">
 <connects>
 <connect gate="G$1" pin="1" pad="1"/>
 <connect gate="G$1" pin="2" pad="2"/>
@@ -1213,19 +1249,21 @@ by exp-lbrs.ulp</description>
 <part name="C5" library="p8x-2016" deviceset="C" device="" value="10nF"/>
 <part name="GND17" library="propdev-2016" deviceset="GND" device=""/>
 <part name="GND18" library="propdev-2016" deviceset="GND" device=""/>
-<part name="CPU_ICSP" library="p8x-2016" deviceset="PROPELLER_ICSP_HEADER" device=""/>
+<part name="CPU_ICSP" library="p8x-2016" deviceset="PROPELLER_ICSP_HEADER" device="" value="PROPELLER_ICSP_HEADER"/>
 <part name="+3.3V2" library="propdev-2016" deviceset="+3.3V" device=""/>
 <part name="GND6" library="propdev-2016" deviceset="GND" device=""/>
 <part name="IC1" library="dual-propplug" deviceset="PIC18F24J50" device="-I/P"/>
 <part name="R4" library="p8x-2016" deviceset="R" device="-1/4W" value="220"/>
 <part name="DL4" library="p8x-2016" deviceset="LED" device="-3MM"/>
-<part name="GPU_ICSP" library="p8x-2016" deviceset="PROPELLER_ICSP_HEADER" device=""/>
+<part name="GPU_ICSP" library="p8x-2016" deviceset="PROPELLER_ICSP_HEADER" device="" value="PROPELLER_ICSP_HEADER"/>
 <part name="GND8" library="propdev-2016" deviceset="GND" device=""/>
 <part name="GND3" library="propdev-2016" deviceset="GND" device=""/>
 <part name="R6" library="p8x-2016" deviceset="R" device="-1/4W" value="10.000"/>
 <part name="R7" library="p8x-2016" deviceset="R" device="-1/4W" value="10.000"/>
 <part name="C2" library="p8x-2016" deviceset="CP" device="-2.5-6" value="10uF 16v."/>
 <part name="R8" library="p8x-2016" deviceset="R" device="-1/4W"/>
+<part name="R9" library="p8x-2016" deviceset="R" device="-1/4W" value="10.000"/>
+<part name="R10" library="p8x-2016" deviceset="R" device="-1/4W" value="10.000"/>
 </parts>
 <sheets>
 <sheet>
@@ -1249,26 +1287,28 @@ by exp-lbrs.ulp</description>
 <instance part="DL1" gate="G$1" x="38.1" y="83.82" rot="MR0"/>
 <instance part="R1" gate="R" x="38.1" y="97.79" rot="R90"/>
 <instance part="GND11" gate="GND" x="38.1" y="76.2"/>
-<instance part="TR1" gate="G$1" x="161.29" y="82.55"/>
-<instance part="R5" gate="R" x="151.13" y="74.93" rot="R90"/>
-<instance part="GND16" gate="GND" x="163.83" y="64.77"/>
+<instance part="TR1" gate="G$1" x="168.91" y="82.55"/>
+<instance part="R5" gate="R" x="158.75" y="74.93" rot="R90"/>
+<instance part="GND16" gate="GND" x="171.45" y="64.77"/>
 <instance part="C1" gate="G$1" x="58.42" y="50.8"/>
-<instance part="C5" gate="G$1" x="143.51" y="82.55" rot="R270"/>
+<instance part="C5" gate="G$1" x="151.13" y="82.55" rot="R270"/>
 <instance part="GND17" gate="GND" x="68.58" y="12.7"/>
 <instance part="GND18" gate="GND" x="58.42" y="40.64"/>
-<instance part="CPU_ICSP" gate="G$1" x="187.96" y="96.52" rot="MR180"/>
-<instance part="+3.3V2" gate="+3V3" x="180.34" y="107.95"/>
-<instance part="GND6" gate="GND" x="151.13" y="64.77"/>
+<instance part="CPU_ICSP" gate="G$1" x="195.58" y="96.52" rot="MR180"/>
+<instance part="+3.3V2" gate="+3V3" x="187.96" y="107.95"/>
+<instance part="GND6" gate="GND" x="158.75" y="64.77"/>
 <instance part="IC1" gate="G$1" x="86.36" y="45.72"/>
 <instance part="R4" gate="R" x="111.76" y="22.86"/>
 <instance part="DL4" gate="G$1" x="125.73" y="22.86" rot="MR270"/>
-<instance part="GPU_ICSP" gate="G$1" x="187.96" y="55.88" rot="MR180"/>
-<instance part="GND8" gate="GND" x="180.34" y="41.91"/>
+<instance part="GPU_ICSP" gate="G$1" x="195.58" y="55.88" rot="MR180"/>
+<instance part="GND8" gate="GND" x="187.96" y="41.91"/>
 <instance part="GND3" gate="GND" x="50.8" y="40.64"/>
 <instance part="R6" gate="R" x="106.68" y="76.2" rot="R90"/>
-<instance part="R7" gate="R" x="114.3" y="76.2" rot="R90"/>
+<instance part="R7" gate="R" x="119.38" y="76.2" rot="R90"/>
 <instance part="C2" gate="G$1" x="50.8" y="50.8"/>
 <instance part="R8" gate="R" x="68.58" y="49.53" rot="R90"/>
+<instance part="R9" gate="R" x="111.76" y="76.2" rot="R90"/>
+<instance part="R10" gate="R" x="124.46" y="76.2" rot="R90"/>
 </instances>
 <busses>
 </busses>
@@ -1281,16 +1321,17 @@ by exp-lbrs.ulp</description>
 </segment>
 <segment>
 <pinref part="CPU_ICSP" gate="G$1" pin="5"/>
-<wire x1="182.88" y1="101.6" x2="180.34" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="101.6" x2="180.34" y2="105.41" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="101.6" x2="187.96" y2="101.6" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="101.6" x2="187.96" y2="105.41" width="0.1524" layer="91"/>
 <pinref part="+3.3V2" gate="+3V3" pin="+3.3V"/>
 </segment>
 <segment>
 <pinref part="R6" gate="R" pin="2"/>
 <pinref part="R7" gate="R" pin="2"/>
 <wire x1="106.68" y1="83.82" x2="106.68" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="106.68" y1="83.82" x2="114.3" y2="83.82" width="0.1524" layer="91"/>
-<wire x1="114.3" y1="83.82" x2="114.3" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="83.82" x2="111.76" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="83.82" x2="119.38" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="83.82" x2="119.38" y2="81.28" width="0.1524" layer="91"/>
 <junction x="106.68" y="83.82"/>
 <pinref part="+3.3V1" gate="+3V3" pin="+3.3V"/>
 <wire x1="68.58" y1="63.5" x2="68.58" y2="71.12" width="0.1524" layer="91"/>
@@ -1310,6 +1351,13 @@ by exp-lbrs.ulp</description>
 <pinref part="R8" gate="R" pin="2"/>
 <wire x1="68.58" y1="54.61" x2="68.58" y2="63.5" width="0.1524" layer="91"/>
 <junction x="68.58" y="63.5"/>
+<pinref part="R9" gate="R" pin="2"/>
+<wire x1="111.76" y1="81.28" x2="111.76" y2="83.82" width="0.1524" layer="91"/>
+<junction x="111.76" y="83.82"/>
+<pinref part="R10" gate="R" pin="2"/>
+<wire x1="119.38" y1="83.82" x2="124.46" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="83.82" x2="124.46" y2="81.28" width="0.1524" layer="91"/>
+<junction x="119.38" y="83.82"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -1349,12 +1397,12 @@ by exp-lbrs.ulp</description>
 <segment>
 <pinref part="GND6" gate="GND" pin="GND"/>
 <pinref part="R5" gate="R" pin="1"/>
-<wire x1="151.13" y1="69.85" x2="151.13" y2="67.31" width="0.1524" layer="91"/>
+<wire x1="158.75" y1="69.85" x2="158.75" y2="67.31" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="TR1" gate="G$1" pin="E"/>
 <pinref part="GND16" gate="GND" pin="GND"/>
-<wire x1="163.83" y1="77.47" x2="163.83" y2="67.31" width="0.1524" layer="91"/>
+<wire x1="171.45" y1="77.47" x2="171.45" y2="67.31" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND17" gate="GND" pin="GND"/>
@@ -1370,8 +1418,8 @@ by exp-lbrs.ulp</description>
 <segment>
 <pinref part="GPU_ICSP" gate="G$1" pin="1"/>
 <pinref part="GND8" gate="GND" pin="GND"/>
-<wire x1="182.88" y1="50.8" x2="180.34" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="50.8" x2="180.34" y2="44.45" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="50.8" x2="187.96" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="50.8" x2="187.96" y2="44.45" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND3" gate="GND" pin="GND"/>
@@ -1441,11 +1489,11 @@ by exp-lbrs.ulp</description>
 <segment>
 <pinref part="C5" gate="G$1" pin="1"/>
 <pinref part="TR1" gate="G$1" pin="B"/>
-<wire x1="146.05" y1="82.55" x2="151.13" y2="82.55" width="0.1524" layer="91"/>
+<wire x1="153.67" y1="82.55" x2="158.75" y2="82.55" width="0.1524" layer="91"/>
 <pinref part="R5" gate="R" pin="2"/>
-<wire x1="151.13" y1="82.55" x2="158.75" y2="82.55" width="0.1524" layer="91"/>
-<wire x1="151.13" y1="80.01" x2="151.13" y2="82.55" width="0.1524" layer="91"/>
-<junction x="151.13" y="82.55"/>
+<wire x1="158.75" y1="82.55" x2="166.37" y2="82.55" width="0.1524" layer="91"/>
+<wire x1="158.75" y1="80.01" x2="158.75" y2="82.55" width="0.1524" layer="91"/>
+<junction x="158.75" y="82.55"/>
 </segment>
 </net>
 <net name="N$10" class="0">
@@ -1459,32 +1507,32 @@ by exp-lbrs.ulp</description>
 <segment>
 <pinref part="CPU_ICSP" gate="G$1" pin="2"/>
 <pinref part="TR1" gate="G$1" pin="C"/>
-<wire x1="182.88" y1="93.98" x2="180.34" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="93.98" x2="163.83" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="163.83" y1="93.98" x2="163.83" y2="87.63" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="93.98" x2="187.96" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="93.98" x2="171.45" y2="93.98" width="0.1524" layer="91"/>
+<wire x1="171.45" y1="93.98" x2="171.45" y2="87.63" width="0.1524" layer="91"/>
 <pinref part="GPU_ICSP" gate="G$1" pin="2"/>
-<wire x1="182.88" y1="53.34" x2="180.34" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="180.34" y1="53.34" x2="180.34" y2="93.98" width="0.1524" layer="91"/>
-<junction x="180.34" y="93.98"/>
+<wire x1="190.5" y1="53.34" x2="187.96" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="187.96" y1="53.34" x2="187.96" y2="93.98" width="0.1524" layer="91"/>
+<junction x="187.96" y="93.98"/>
 </segment>
 </net>
 <net name="!RES1!" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="DTR2"/>
-<wire x1="101.6" y1="63.5" x2="134.62" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="134.62" y1="63.5" x2="134.62" y2="82.55" width="0.1524" layer="91"/>
+<wire x1="101.6" y1="63.5" x2="142.24" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="142.24" y1="63.5" x2="142.24" y2="82.55" width="0.1524" layer="91"/>
 <pinref part="C5" gate="G$1" pin="2"/>
-<wire x1="134.62" y1="82.55" x2="138.43" y2="82.55" width="0.1524" layer="91"/>
+<wire x1="142.24" y1="82.55" x2="146.05" y2="82.55" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="RX1" class="0">
 <segment>
 <pinref part="IC1" gate="G$1" pin="RX2"/>
 <wire x1="101.6" y1="66.04" x2="106.68" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="106.68" y1="66.04" x2="132.08" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="132.08" y1="66.04" x2="132.08" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="106.68" y1="66.04" x2="139.7" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="66.04" x2="139.7" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="CPU_ICSP" gate="G$1" pin="4"/>
-<wire x1="132.08" y1="99.06" x2="182.88" y2="99.06" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="99.06" x2="190.5" y2="99.06" width="0.1524" layer="91"/>
 <pinref part="R6" gate="R" pin="1"/>
 <wire x1="106.68" y1="71.12" x2="106.68" y2="66.04" width="0.1524" layer="91"/>
 <junction x="106.68" y="66.04"/>
@@ -1493,10 +1541,14 @@ by exp-lbrs.ulp</description>
 <net name="TX1" class="0">
 <segment>
 <pinref part="CPU_ICSP" gate="G$1" pin="3"/>
-<wire x1="182.88" y1="96.52" x2="129.54" y2="96.52" width="0.1524" layer="91"/>
-<wire x1="129.54" y1="96.52" x2="129.54" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="96.52" x2="137.16" y2="96.52" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="96.52" x2="137.16" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="TX2"/>
-<wire x1="129.54" y1="68.58" x2="101.6" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="68.58" x2="111.76" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="R9" gate="R" pin="1"/>
+<wire x1="111.76" y1="68.58" x2="101.6" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="111.76" y1="71.12" x2="111.76" y2="68.58" width="0.1524" layer="91"/>
+<junction x="111.76" y="68.58"/>
 </segment>
 </net>
 <net name="USB" class="0">
@@ -1523,21 +1575,25 @@ by exp-lbrs.ulp</description>
 <net name="TX2" class="0">
 <segment>
 <pinref part="GPU_ICSP" gate="G$1" pin="3"/>
-<wire x1="182.88" y1="55.88" x2="101.6" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="55.88" x2="124.46" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="TX1"/>
+<pinref part="R10" gate="R" pin="1"/>
+<wire x1="124.46" y1="55.88" x2="101.6" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="124.46" y1="71.12" x2="124.46" y2="55.88" width="0.1524" layer="91"/>
+<junction x="124.46" y="55.88"/>
 </segment>
 </net>
 <net name="RX2" class="0">
 <segment>
 <pinref part="GPU_ICSP" gate="G$1" pin="4"/>
-<wire x1="182.88" y1="58.42" x2="132.08" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="132.08" y1="58.42" x2="132.08" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="190.5" y1="58.42" x2="139.7" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="58.42" x2="139.7" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="IC1" gate="G$1" pin="RX1"/>
-<wire x1="132.08" y1="53.34" x2="114.3" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="139.7" y1="53.34" x2="119.38" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="R7" gate="R" pin="1"/>
-<wire x1="114.3" y1="53.34" x2="101.6" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="114.3" y1="71.12" x2="114.3" y2="53.34" width="0.1524" layer="91"/>
-<junction x="114.3" y="53.34"/>
+<wire x1="119.38" y1="53.34" x2="101.6" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="119.38" y1="71.12" x2="119.38" y2="53.34" width="0.1524" layer="91"/>
+<junction x="119.38" y="53.34"/>
 </segment>
 </net>
 <net name="N$9" class="0">

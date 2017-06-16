@@ -46,6 +46,8 @@
 #pragma config WPEND = PAGE_0       //Start protection at page 0
 #pragma config WPCFG = OFF          //Write/Erase last page protect Disabled
 #pragma config WPDIS = OFF          //WPFP[5:0], WPEND, and WPCFG bits ignored
+#pragma config T1DIG = ON           //Sec Osc clock source may be selected
+#pragma config LPT1OSC = OFF        //high power Timer1 mode
  
 /*********************************************************************
 * Function: void SYSTEM_Initialize( SYSTEM_STATE state )

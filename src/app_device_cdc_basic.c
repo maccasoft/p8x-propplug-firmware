@@ -72,7 +72,7 @@ void APP_DeviceCDCEmulatorInitialize()
 {
     CDCInitEP();
 
-    USART_Initialize();
+    //USART_Initialize();
 
     // Initialize the arrays
     unsigned char i;
@@ -88,25 +88,11 @@ void APP_DeviceCDCEmulatorInitialize()
 }
 
 
-static int mTxRdyUSART1()
-{
-    return TXSTA2bits.TRMT;
-}
+#define mTxRdyUSART1()      PIR3bits.TX2IF
+#define mTxRdyUSART2()      PIR1bits.TX1IF
 
-static int mTxRdyUSART2()
-{
-    return TXSTA1bits.TRMT;
-}
-
-static int mDataRdyUSART1()
-{
-    return PIR3bits.RC2IF;
-}
-
-static int mDataRdyUSART2()
-{
-    return PIR1bits.RC1IF;
-}
+#define mDataRdyUSART1()    PIR3bits.RC2IF
+#define mDataRdyUSART2()    PIR1bits.RC1IF
 
 /*********************************************************************
 * Function: void APP_DeviceCDCEmulatorTasks(void);

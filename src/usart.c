@@ -112,17 +112,20 @@ void USART_putcUSART2(char c)
 #if defined(USB_CDC_SET_LINE_CODING_HANDLER)
 void USART_mySetLineCodingHandler(void)
 {
+    uint32_t dwBaud;
+    unsigned char c;
+     
     //Update the baudrate info in the CDC driver
     CDCSetBaudRate(cdc_notice.GetLineCoding.dwDTERate);
 
     //Update the baudrate of the UART
 
-    uint32_t dwBaud;
-    dwBaud = ((GetSystemClock()/4) / line_coding.dwDTERate) - 1;
+    dwBaud = ((GetSystemClock() / 4) / line_coding.dwDTERate) - 1;
     SPBRG1 = SPBRG2 = (uint8_t) dwBaud;
     SPBRGH1 = SPBRGH2 = (uint8_t)((uint16_t) (dwBaud >> 8));
         
-    USART_Initialize();
+    c = RCREG1;             // read
+    c = RCREG2;             // read
 }
 #endif
 
